@@ -1,17 +1,24 @@
-import 'package:demo02/models/model_todo.dart';
+import 'package:demo02/data.dart';
 import 'package:flutter/material.dart';
 
+import 'home_page.dart';
+
 class TodoPage extends StatefulWidget {
-  final Todo todo;
-  const TodoPage({Key? key, required this.todo}) : super(key: key);
+  const TodoPage({Key? key}) : super(key: key);
 
   @override
   _TodoPageState createState() => _TodoPageState();
 }
 
 class _TodoPageState extends State<TodoPage> {
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    final data = context.dependOnInheritedWidgetOfExactType<DataInheritedWidget>();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -30,9 +37,9 @@ class _TodoPageState extends State<TodoPage> {
                         child: GestureDetector(
 
                           onTap: (){
-                            showDialog(
+                            /*showDialog(
                                 context: context,
-                                builder: (BuildContext context) => _buildPopupDialog(context, widget.todo.title));
+                                builder: (BuildContext context) => _buildPopupDialog(context, listTodo1[widget.index].title));*/
                           },
 
                           child: Container(
@@ -43,7 +50,7 @@ class _TodoPageState extends State<TodoPage> {
                               borderRadius: const BorderRadius.all(Radius.circular(30))
                             ),
                       child: Center(
-                          child: Text(widget.todo.title,style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold, fontSize: 30),
+                          child: Text(data.intdexTodo.toString(),style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold, fontSize: 30),
                           ),
                     )),
                         )),
@@ -76,7 +83,7 @@ class _TodoPageState extends State<TodoPage> {
                                 color: Colors.teal,
                                 borderRadius: BorderRadius.all(Radius.circular(15)),
                               ),
-                              child: Center(child: Text(widget.todo.datetime!.day.toString())),
+                              child: Center(child: Text("hello")),
                             ),
                             const SizedBox(height: 20,),
                             SizedBox(
