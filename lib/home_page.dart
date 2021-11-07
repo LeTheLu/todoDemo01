@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: ListView.separated(
                 separatorBuilder: (context, index) {
-                  return Divider();
+                  return const Divider();
                 },
                 itemCount: listTodo.length,
                 itemBuilder: (context, index) {
@@ -90,7 +90,7 @@ item(context , Todo todo) {
           color: Colors.grey[200],
           borderRadius: BorderRadius.circular(30)
       ),
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       height: 100,
       width: double.infinity,
       child: Padding(
