@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:demo02/main.dart';
 import 'package:demo02/models/model_todo.dart';
 import 'package:flutter/material.dart';
 

@@ -36,6 +36,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     }
     super.didChangeAppLifecycleState(state);
   }
+
   @override
   void dispose(){
     saveData();
