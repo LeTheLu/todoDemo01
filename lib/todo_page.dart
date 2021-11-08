@@ -76,37 +76,6 @@ class _TodoPageState extends State<TodoPage> {
                           ),
                         ),
                       ),),
-                    Expanded(
-                        flex: 3,
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 20,),
-                            Container(
-                              height: 60,
-                              width: MediaQuery.of(context).size.width - 50,
-                              decoration: const BoxDecoration(
-                                color: Colors.teal,
-                                borderRadius: BorderRadius.all(Radius.circular(15)),
-                              ),
-                              child: Center(child: Text("hello")),
-                            ),
-                            const SizedBox(height: 20,),
-                            SizedBox(
-                                height: 50,
-                                width: 100,
-                                child: RaisedButton(
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(15))
-                                  ),
-                                  padding: const EdgeInsets.all(10),
-                                  onPressed: (){
-
-                                  },
-                                  color: Colors.teal,
-                                  child: const Text("Save",style: TextStyle(color: Colors.white),),
-                                )),
-                          ],
-                        ))
                   ],
                 ),
             ),

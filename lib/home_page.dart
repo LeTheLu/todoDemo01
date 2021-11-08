@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 itemCount: data.length,
                 itemBuilder: (context, index) {
-                  return item(context, index, data[index]);
+                  return item(context, index, data);
                 },
               ),
             ),
@@ -84,45 +84,63 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  item(context , int index, Todo todo) {
+  item(context , int index, List<Todo> listTodo) {
     return GestureDetector(
       onTap: (){
         Navigator.pushNamed(context, RouteName.page,arguments: index);
       },
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(30)
-        ),
-        margin: const EdgeInsets.all(5),
-        height: 100,
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            children: [
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30), color: Colors.teal),
-                child: Center(child: Text(todo.datetime!.day.toString())),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(30)
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
+              margin: const EdgeInsets.all(5),
+              height: 100,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Row(
                   children: [
-                    Text(todo.title, style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),),
-                    Text(todo.cmt, overflow: TextOverflow.ellipsis,),
+                    Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30), color: Colors.teal),
+                      child: const Center(child: Icon(Icons.access_time_filled, color: Colors.white,)),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Column(
+                        children: [
+                          Text(listTodo[index].title, style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),),
+                          Text(listTodo[index].cmt, overflow: TextOverflow.ellipsis,),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+          SizedBox(
+            height: 30,
+            width: 30,
+            child: GestureDetector(
+              onTap: (){
+                setState(() {
+                  listTodo.removeAt(index);
+                });
+              },
+              child: const Icon(Icons.clear),
+            ),
+          )
+        ],
       ),
     );
   }
