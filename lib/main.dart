@@ -6,6 +6,8 @@ import 'package:demo02/router.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'shared_preferences_helper.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -24,39 +26,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
 
   @override
   void initState() {
-    getData();
+      getInitData();
     super.initState();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if(state == AppLifecycleState.paused){
-      saveData();
-    }else if(state == AppLifecycleState.resumed){
-    }
-    super.didChangeAppLifecycleState(state);
-  }
-
-  @override
-  void dispose(){
-    saveData();
-    super.dispose();
-  }
-
-  saveData() {
-    List<String> list = listTodo1.map((e) => json.encode(e.toMap())).toList();
-    prefs.setStringList("list", list);
-  }
-
-  getData() async {
-    prefs = await SharedPreferences.getInstance();
-    loadData();
-  }
-
-  loadData() {
-    List<String> list = prefs.getStringList("list") ?? [];
-    listTodo1 = list.map((e) => Todo.fromMap(jsonDecode(e))).toList();
-    setState(() {});
+  getInitData() async {
+    List<Todo> listTodo = await SharedPreferencesHelper.getData();
+    setState(() {
+      listTodo1 = listTodo;
+    });
   }
 
   @override
