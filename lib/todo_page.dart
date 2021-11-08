@@ -1,4 +1,5 @@
 import 'package:demo02/data.dart';
+import 'package:demo02/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 
 
@@ -37,24 +38,43 @@ class _TodoPageState extends State<TodoPage> {
                   children: [
                     Expanded(
                       flex:1,
-                        child: GestureDetector(
-                          onTap: (){
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) => _buildPopupDialog(context: context,title:  data[widget.index].title,index: widget.index));
-                          },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              child: GestureDetector(
+                                onTap: (){
 
-                          child: Container(
-                            height: 100,
-                            width: MediaQuery.of(context).size.width -20,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: const BorderRadius.all(Radius.circular(30))
+                                  SharedPreferencesHelper.saveData(listTodo: data);
+
+                                  Navigator.pop(context);
+                                  },
+                                child: const Icon(Icons.arrow_back_ios_new),
+                              ),
                             ),
-                      child: Center(
-                          child: Text(data[widget.index].title,style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold, fontSize: 30),
-                          ),
-                    )),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: (){
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) => _buildPopupDialog(context: context,title:  data[widget.index].title,index: widget.index));
+                                },
+
+                                child: Container(
+                                    height: 100,
+                                    width: MediaQuery.of(context).size.width -100,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius: const BorderRadius.all(Radius.circular(30))
+                                    ),
+                                    child: Center(
+                                      child: Text(data[widget.index].title,style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold, fontSize: 30),
+                                      ),
+                                    )),
+                              ),
+                            )
+                          ],
                         )),
                     const SizedBox(height: 20),
                     Expanded(

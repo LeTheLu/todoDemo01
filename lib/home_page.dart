@@ -1,3 +1,4 @@
+import 'package:demo02/shared_preferences_helper.dart';
 import 'package:demo02/router.dart';
 import 'package:flutter/material.dart';
 import 'data.dart';
@@ -12,12 +13,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-
   @override
   Widget build(BuildContext context) {
+
     TextEditingController _controller = TextEditingController();
     final data = DataInheritedWidget.of(context).listTodo;
-    final DateTime dateTime = DateTime.now();
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -57,6 +58,10 @@ class _HomePageState extends State<HomePage> {
                     setState(() {
                       Todo todo = Todo(title: _controller.text);
                       data.add(todo);
+                      setState(() {
+                        SharedPreferencesHelper.saveData(listTodo: data);
+                      });
+
                     });
                   },
                   child: const Text(
@@ -134,6 +139,7 @@ class _HomePageState extends State<HomePage> {
               onTap: (){
                 setState(() {
                   listTodo.removeAt(index);
+                  SharedPreferencesHelper.saveData(listTodo: listTodo);
                 });
               },
               child: const Icon(Icons.clear),
