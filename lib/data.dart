@@ -1,3 +1,4 @@
+import 'package:demo02/models/model_todo.dart';
 import 'package:flutter/material.dart';
 
 class DataInheritedWidget extends InheritedWidget {
@@ -5,9 +6,9 @@ class DataInheritedWidget extends InheritedWidget {
 
 
   final Widget child;
-  final int intdexTodo;
+  final List<Todo> listTodo;
 
-  const DataInheritedWidget({required this.child,required this.intdexTodo, Key? key,}) : super(key: key, child: child);
+  const DataInheritedWidget({required this.child,required this.listTodo, Key? key,}) : super(key: key, child: child);
 
 
   static DataInheritedWidget of(BuildContext context) {
@@ -18,6 +19,6 @@ class DataInheritedWidget extends InheritedWidget {
 
   @override
   bool updateShouldNotify(DataInheritedWidget oldWidget) {
-    return intdexTodo != oldWidget.intdexTodo;
+    return listTodo != oldWidget.listTodo;
   }
 }

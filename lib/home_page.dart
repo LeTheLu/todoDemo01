@@ -12,88 +12,74 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  Todo todo = Todo(DateTime.now(), title: "Title", cmt: "CMT");
-  List<Todo> listTodo1 = [];
-
-  int index01 = 1 ;
-
-
 
 
   @override
   Widget build(BuildContext context) {
-    listTodo1.add(todo);
-
-
-
-    return DataInheritedWidget(
-      intdexTodo: index01,
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width - 120,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: const BorderRadius.all(Radius.circular(30)),
-                    ),
-                    child: const Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: TextField(
-                          decoration: InputDecoration.collapsed(
-                              hintText: "Thêm Todo",
-                              hintStyle: TextStyle(color: Colors.black)),
-                        ),
+    TextEditingController _controller = TextEditingController();
+    final data = DataInheritedWidget.of(context).listTodo;
+    final DateTime dateTime = DateTime.now();
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width - 120,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: const BorderRadius.all(Radius.circular(30)),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TextField(
+                        controller: _controller,
+                        decoration: const InputDecoration.collapsed(
+                            hintText: "Thêm Todo",
+                            hintStyle: TextStyle(color: Colors.black)),
                       ),
                     ),
                   ),
-                  RaisedButton(
-                    padding: const EdgeInsets.all(15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    color: Colors.teal,
-                    onPressed: () {
-                      setState(() {
-
-                      });
-                    },
-                    child: Text(
-                      index01.toString(),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  )
-                ],
-              ),
-              const Divider(),
-              Expanded(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) {
-                    return const Divider();
-                  },
-                  itemCount: listTodo1.length,
-                  itemBuilder: (context, index) {
-                    return item(context, index, listTodo1[index]);
-                  },
                 ),
+                RaisedButton(
+                  padding: const EdgeInsets.all(15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  color: Colors.teal,
+                  onPressed: () {
+                    setState(() {
+                      Todo todo = Todo(dateTime, title: _controller.text);
+                      data.add(todo);
+                    });
+                  },
+                  child: const Text(
+                    "Add",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+            const Divider(),
+            Expanded(
+              child: ListView.separated(
+                separatorBuilder: (context, index) {
+                  return const Divider();
+                },
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  return item(context, index, data[index]);
+                },
               ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            final data = context.dependOnInheritedWidgetOfExactType<DataInheritedWidget>();
-            print(data!.intdexTodo);
-          },
+            ),
+          ],
         ),
       ),
     );

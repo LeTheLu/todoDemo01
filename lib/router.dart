@@ -17,7 +17,8 @@ class Routes{
         return MaterialPageRoute(builder: (_) => const HomePage());
       }
       case "TodoPage": {
-        return MaterialPageRoute(builder: (_) => const TodoPage());
+        int index = settings.arguments as int;
+        return MaterialPageRoute(builder: (_) => TodoPage(index: index));
       }
     }
   }

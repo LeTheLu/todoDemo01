@@ -1,10 +1,10 @@
 import 'package:demo02/data.dart';
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
 
 class TodoPage extends StatefulWidget {
-  const TodoPage({Key? key}) : super(key: key);
+  final int index;
+  const TodoPage({Key? key, required this.index}) : super(key: key);
 
   @override
   _TodoPageState createState() => _TodoPageState();
@@ -13,11 +13,14 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
 
 
+  final TextEditingController _controller = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
 
-    final data = context.dependOnInheritedWidgetOfExactType<DataInheritedWidget>();
+    final data = DataInheritedWidget.of(context).listTodo;
+    _controller.text = data[widget.index].cmt ;
 
     return Scaffold(
       body: SafeArea(
@@ -35,11 +38,10 @@ class _TodoPageState extends State<TodoPage> {
                     Expanded(
                       flex:1,
                         child: GestureDetector(
-
                           onTap: (){
-                            /*showDialog(
+                            showDialog(
                                 context: context,
-                                builder: (BuildContext context) => _buildPopupDialog(context, listTodo1[widget.index].title));*/
+                                builder: (BuildContext context) => _buildPopupDialog(context: context,title:  data[widget.index].title,index: widget.index));
                           },
 
                           child: Container(
@@ -50,7 +52,7 @@ class _TodoPageState extends State<TodoPage> {
                               borderRadius: const BorderRadius.all(Radius.circular(30))
                             ),
                       child: Center(
-                          child: Text(data.intdexTodo.toString(),style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold, fontSize: 30),
+                          child: Text(data[widget.index].title,style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold, fontSize: 30),
                           ),
                     )),
                         )),
@@ -58,16 +60,19 @@ class _TodoPageState extends State<TodoPage> {
                     Expanded(
                       flex: 8,
                       child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(15)
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-                          child: SingleChildScrollView(
-                            child: TextField(
-                              decoration: InputDecoration.collapsed(hintText: "Text"),
-                            ),
+                        child: SingleChildScrollView(
+                          child: TextField(
+                            textInputAction: TextInputAction.done,
+                            controller: _controller,
+                            onEditingComplete: (){
+                              data[widget.index].cmt = _controller.text;
+                            },
+                            decoration: const InputDecoration.collapsed(hintText: "Text"),
                           ),
                         ),
                       ),),
@@ -111,9 +116,12 @@ class _TodoPageState extends State<TodoPage> {
     );
   }
 
-  Widget _buildPopupDialog(BuildContext context, String title) {
+  Widget _buildPopupDialog({required BuildContext context,required String title,required int index}) {
     TextEditingController _controller  = TextEditingController();
     _controller.text = title;
+
+    final data = DataInheritedWidget.of(context).listTodo;
+
     return AlertDialog(
         content:  Column(
           mainAxisSize: MainAxisSize.min,
@@ -130,6 +138,9 @@ class _TodoPageState extends State<TodoPage> {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
+             setState(() {
+               data[index].title =  _controller.text;
+             });
               Navigator.of(context).pop();
             },
             textColor: Theme.of(context).primaryColor,
