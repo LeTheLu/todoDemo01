@@ -1,9 +1,10 @@
+import 'dart:convert';
+
+import 'package:demo02/main.dart';
 import 'package:demo02/models/model_todo.dart';
 import 'package:flutter/material.dart';
 
 class DataInheritedWidget extends InheritedWidget {
-
-
 
   final Widget child;
   final List<Todo> listTodo;
@@ -17,8 +18,12 @@ class DataInheritedWidget extends InheritedWidget {
     return result!;
   }
 
+
   @override
   bool updateShouldNotify(DataInheritedWidget oldWidget) {
     return listTodo != oldWidget.listTodo;
   }
+
+
+
 }

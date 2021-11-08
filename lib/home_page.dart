@@ -13,7 +13,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
 
-
   @override
   Widget build(BuildContext context) {
     TextEditingController _controller = TextEditingController();
@@ -56,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.teal,
                   onPressed: () {
                     setState(() {
-                      Todo todo = Todo(dateTime, title: _controller.text);
+                      Todo todo = Todo(title: _controller.text);
                       data.add(todo);
                     });
                   },
