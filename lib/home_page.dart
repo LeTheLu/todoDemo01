@@ -14,35 +14,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final TextEditingController _controller = TextEditingController();
-  List<Todo> data = [];
 
 
+  late  List<Todo> data;
 
 
-  /*@override
+  @override
   didChangeDependencies(){
     data = DataInheritedWidget.of(context).listTodo;
     super.didChangeDependencies();
-  }*/
-
-  @override
-  void initState() {
-    super.initState();
-    getInitData();
   }
 
-  getInitData() async {
-    List<Todo> listTodo = await SharedPreferencesHelper.getData();
-    setState(() {
-      data = listTodo;
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
-    return DataInheritedWidget(
-      listTodo: data,
-      child: Scaffold(
+    return Scaffold(
         body: SafeArea(
           child: Column(
             children: [
@@ -99,20 +86,19 @@ class _HomePageState extends State<HomePage> {
                   },
                   itemCount: data.length,
                   itemBuilder: (context, index) {
-                    return item(context, index, data[index],data);
+                    return item(context, index,data);
                   },
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
+      );
   }
-  item(context , int index, Todo todo, List<Todo> listTodo) {
+  item(context , int index, List<Todo> listTodo) {
     return GestureDetector(
       onTap: (){
-        Navigator.pushNamed(context, RouteName.page,arguments: todo);
+        Navigator.pushNamed(context, RouteName.page,arguments: index);
       },
       child: Row(
         children: [
@@ -143,8 +129,8 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Column(
                         children: [
-                          Text(todo.title, style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),),
-                          Text(todo.cmt, overflow: TextOverflow.ellipsis,),
+                          Text(listTodo[index].title, style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),),
+                          Text(listTodo[index].cmt, overflow: TextOverflow.ellipsis,),
                         ],
                       ),
                     ),

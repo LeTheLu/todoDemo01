@@ -6,16 +6,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'models/model_todo.dart';
 
 class TodoPage extends StatefulWidget {
-  final Todo todo;
-  const TodoPage({Key? key,required this.todo}) : super(key: key);
+  final int index;
+  const TodoPage({Key? key, required this.index}) : super(key: key);
 
   @override
   _TodoPageState createState() => _TodoPageState();
 }
 
 class _TodoPageState extends State<TodoPage> {
-
   final TextEditingController _controller = TextEditingController();
+  List<Todo> data = [];
+
+  @override
+  didChangeDependencies() {
+    setState(() {
+      data = DataInheritedWidget.of(context).listTodo;
+    });
+    _controller.text = data[widget.index].cmt;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    _controller.addListener(() {
+      data[widget.index].cmt = _controller.text;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +58,9 @@ class _TodoPageState extends State<TodoPage> {
                           SizedBox(
                             child: GestureDetector(
                               onTap: () {
-                                /*SharedPreferencesHelper.saveData(
-                                    listTodo: data);*/
-
+                                data[widget.index].cmt = _controller.text;
+                                SharedPreferencesHelper.saveData(
+                                    listTodo: data);
                                 Navigator.pop(context);
                               },
                               child: const Icon(Icons.arrow_back_ios_new),
@@ -52,13 +69,13 @@ class _TodoPageState extends State<TodoPage> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                /*showDialog(
+                                showDialog(
                                     context: context,
                                     builder: (BuildContext context) =>
                                         _buildPopupDialog(
                                             context: context,
                                             title: data[widget.index].title,
-                                            index: widget.index));*/
+                                            index: widget.index));
                               },
                               child: Container(
                                   height: 100,
@@ -69,13 +86,13 @@ class _TodoPageState extends State<TodoPage> {
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(30))),
                                   child: Center(
-                                    child: Text("home") /*Text(
+                                    child: Text(
                                       data[widget.index].title,
                                       style: const TextStyle(
                                           color: Colors.teal,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 30),
-                                    )*/,
+                                    ),
                                   )),
                             ),
                           )
@@ -94,11 +111,11 @@ class _TodoPageState extends State<TodoPage> {
                         child: TextField(
                           textInputAction: TextInputAction.done,
                           controller: _controller,
-                          /*onEditingComplete: () {
-                            data[widget.index].cmt = _controller.text;
-                          },*/
                           decoration:
                               const InputDecoration.collapsed(hintText: "Text"),
+                          onEditingComplete: () {
+                            data[widget.index].cmt = _controller.text;
+                          },
                         ),
                       ),
                     ),
